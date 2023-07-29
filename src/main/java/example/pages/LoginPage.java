@@ -24,6 +24,10 @@ public class LoginPage extends TestBase {
         TestBase.driver.get("https://wf.testingmonkey.com/partner/login");
         emailField.sendKeys(emailId);
         passwordField.sendKeys(pwd);
+//        if(loginButton.isDisplayed()) {
+//            loginButton.click();
+//        }
+        scrollToElement(loginButton);
         loginButton.click();
     }
 }

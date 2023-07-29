@@ -14,7 +14,7 @@ public class WorkstreamListPage extends TestBase {
     @FindBy(css=".main-content")
     public WebElement workstreamList;
 
-    @FindBy(css=".contract-activity")
+    @FindBy(css=".calender")
     List<WebElement> monthlyContracts;
     @FindBy(css=".monthly-contract .header-w .btn-view-workstream")
     List<WebElement> viewWorkstreamButton;
@@ -24,6 +24,7 @@ public class WorkstreamListPage extends TestBase {
     public void openContract(){
         int totalContracts = monthlyContracts.size();
             for(int i=0;i<totalContracts;i++) {
+                scrollToElement(monthlyContracts.get(i));
                 if(monthlyContracts.get(i).isDisplayed()){
                     viewWorkstreamButton.get(i).click();
                     System.out.println("opened workstream"+i);
@@ -32,7 +33,7 @@ public class WorkstreamListPage extends TestBase {
                     wait.until(ExpectedConditions.visibilityOf(workstreamList));
                 }
                 scrollToElement(monthlyContracts.get(i));
-                System.out.println("scrolled");
+                System.out.println("scrolled to"+ i);
 //                viewWorkstreamButton.get(i).click();
 //                System.out.println("opened workstream"+i);
 //                driver.navigate().back();
