@@ -79,8 +79,6 @@ public class TestBase {
         int elementY = element.getLocation().getY();
         int elementHeight = element.getSize().getHeight();
         int centerY = elementY + elementHeight / 2;
-        System.out.println(elementHeight);
-
         // Get the viewport height
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         long viewportHeight = (long) jsExecutor.executeScript("return window.innerHeight");
