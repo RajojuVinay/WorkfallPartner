@@ -1,5 +1,6 @@
 package example;
 
+import example.pages.ContractPage;
 import example.pages.HomePage;
 import example.pages.LoginPage;
 import example.pages.WorkstreamListPage;
@@ -16,6 +17,7 @@ public class  SmokeTest extends TestBase {
     LoginPage loginPage;
     HomePage homePage;
     WorkstreamListPage workstreamListPage;
+    ContractPage contractPage;
     public SmokeTest(){
         super();
     }
@@ -26,6 +28,7 @@ public class  SmokeTest extends TestBase {
         loginPage = new LoginPage();
         homePage = new HomePage();
         workstreamListPage = new WorkstreamListPage();
+        contractPage = new ContractPage();
 
     }
 

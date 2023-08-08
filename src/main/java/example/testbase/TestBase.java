@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.FileInputStream;
@@ -72,6 +73,10 @@ public class TestBase {
     protected Object executeJavaScript(String script, Object... args) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         return js.executeScript(script, args);
+    }
+
+    protected void waitForElement(WebElement element){
+        wait.until(ExpectedConditions.visibilityOf(element));
     }
     protected void scrollToElement(WebElement element) {
 //        JavascriptExecutor js = (JavascriptExecutor) driver;

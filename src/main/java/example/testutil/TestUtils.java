@@ -6,12 +6,15 @@ import org.openqa.selenium.WebElement;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TestUtils extends TestBase {
 
     public static boolean isWeekday;
+    public static String currentDay;
+    public static String currentMonth;
 
     public void randomSkills(){
 //        for (int k = 0; k < 3; k++) {
@@ -25,7 +28,7 @@ public class TestUtils extends TestBase {
 //        }
     }
 
-    public boolean weekDayVerifier() {
+    public static boolean weekDayVerifier() {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
 
@@ -46,5 +49,16 @@ public class TestUtils extends TestBase {
         }
 
         return isWeekday;
+    }
+
+    public static String currentDay(){
+        LocalDate day = LocalDate.now();
+        String  currentDay = day.format(DateTimeFormatter.ofPattern("DD"));
+      return currentDay;
+    }
+    public static String currentMonth(){
+        LocalDate day = LocalDate.now();
+        String  currentMonth = day.format(DateTimeFormatter.ofPattern("MMM"));
+        return currentMonth;
     }
 }

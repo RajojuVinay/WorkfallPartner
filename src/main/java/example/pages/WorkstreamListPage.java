@@ -28,7 +28,8 @@ public class WorkstreamListPage extends TestBase {
                 if(monthlyContracts.get(i).isDisplayed()){
                     viewWorkstreamButton.get(i).click();
                     System.out.println("opened workstream"+i);
-
+                    ContractPage contractPage = new ContractPage();
+                    contractPage.yetToSubmit();
                     driver.navigate().back();
                     wait.until(ExpectedConditions.visibilityOf(workstreamList));
                 }
