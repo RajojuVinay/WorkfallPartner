@@ -10,6 +10,9 @@ import org.openqa.selenium.support.PageFactory;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static example.testutil.TestUtils.currentDay;
+
 public class ContractPage extends TestBase {
 
     @FindBy(css="span[class='boxOverLay']")
@@ -21,13 +24,28 @@ public class ContractPage extends TestBase {
 
     @FindBy(css=".dateCss")
     List<WebElement> dateLogs;
+    public WebElement currentDayLog(String currentDay) {
+        return driver.findElement(By.xpath("//span[contains(text(),'"+currentDay+"')]/../label"));
+    }
+    public WebElement currentDayLogField(String currentLogDate) {
+        return driver.findElement(By.xpath("//div[contains(text(),'What did you work on "+currentLogDate+"?')]/parent::div//following-sibling::textarea"));
+    }
+
+
+
+    public WebElement submitLog(String currentDay,String currentMonth) {
+        return driver.findElement(By.xpath("//button[contains(text(),'MARK ATTENDANCE FOR "+currentDay+" "+currentMonth+"')]"));
+    }
+
+
 
 //    @FindBy(css=".boxOverLay .contractType")
 //    List<WebElement> logStatus;
-    @FindBy(css=".reminder")
-    WebElement logPopup;
-    @FindBy(css= ".reminder textarea")
-    WebElement submitLog;
+//    @FindBy(css=".reminder")
+//    WebElement logPopup;
+//    @FindBy(css= ".reminder textarea")
+//    WebElement submitLog;
+
 
     public ContractPage(){
         PageFactory.initElements(driver,this);
@@ -35,27 +53,28 @@ public class ContractPage extends TestBase {
 
     public void yetToSubmit(){
         if(TestUtils.weekDayVerifier()){
-           for(int i=0;i<=dateLogs.size();i++){
-               //System.out.println(dateLogs.get(i).getText()+"1");
-               LocalDate day= LocalDate.now();
+           for(int j=0;j<=dateLogs.size();j++){
+              String dayText = dateLogs.get(j).getText()+"1";
+               LocalDate day= LocalDate.now().minusDays(1);
                String currentDay=day.format(DateTimeFormatter.ofPattern("dd"));
                String currentMonth= day.format(DateTimeFormatter.ofPattern("MMM"));
-               if(currentDay.equalsIgnoreCase(dateLogs.get(i).getText())){
+               String currentLogDate= day.format(DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy"));
+               if(currentDay.equalsIgnoreCase(dateLogs.get(j).getText())){
                    System.out.println("Its a Weekday");
-                   String logStatus= "//span[contains(text(),'"+currentDay+"')]/../label/div";
-                   String getStatus =  driver.findElement(By.xpath(logStatus)).getText();
-                   System.out.println(getStatus);
+                   String xpath= "//span[contains(text(),'"+currentDay+"')]/../label/div";
+                   String getStatus =  driver.findElement(By.xpath(xpath)).getText();
+                   System.out.println(getStatus+"null");
                    if(getStatus.equalsIgnoreCase( "")){
-                       dateLogs.get(i).click();
-                       waitForElement(logPopup);
-                       submitLog.sendKeys(prop.getProperty("log_comments"));
-                       String submitButton = "//button[contains(text(),'MARK ATTENDANCE FOR "+currentDay+" "+currentMonth+"')]";
+                      currentDayLog(currentDay).click();
+                       //waitForElement(submitLog(currentDay,currentMonth));
+                       currentDayLogField(currentLogDate).sendKeys(prop.getProperty("log_comments"));
+                       //String submitButton = "//button[contains(text(),'MARK ATTENDANCE FOR "+currentDay+" "+currentMonth+"')]";
                        System.out.println("entered commments");
-                       driver.findElement(By.xpath(submitButton)).click();
-                       break;
+                       //driver.findElement(By.xpath(submitButton)).click();
+                       submitLog(currentDay,currentMonth).click();
                    }
+                   break;
                }
-
            }
        }
         else {

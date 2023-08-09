@@ -76,7 +76,7 @@ public class TestBase {
     }
 
     protected void waitForElement(WebElement element){
-        wait.until(ExpectedConditions.visibilityOf(element));
+        wait.until(ExpectedConditions.visibilityOf(element)).click();
     }
     protected void scrollToElement(WebElement element) {
 //        JavascriptExecutor js = (JavascriptExecutor) driver;
