@@ -66,7 +66,7 @@ public class ContractPage extends TestBase {
         if(TestUtils.weekDayVerifier()) {
             for (int j = 0; j <= dateLogs.size(); j++) {
                 String dayText = dateLogs.get(j).getText() + "1";
-                LocalDate day = LocalDate.now().minusDays(1);
+                LocalDate day = LocalDate.now();
                 String currentDay = day.format(DateTimeFormatter.ofPattern("dd"));
                 String currentMonth = day.format(DateTimeFormatter.ofPattern("MMM"));
                 String currentLogDate = day.format(DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy"));
