@@ -22,6 +22,8 @@ public class WorkstreamListPage extends TestBase {
 
     @FindBy(css="select[name='contracts_filter']")
     WebElement filterStatus;
+    @FindBy(css=".client-contract span")
+    List<WebElement> contractId;
 
     public WorkstreamListPage(){PageFactory.initElements(driver,this);}
 
@@ -29,13 +31,14 @@ public class WorkstreamListPage extends TestBase {
         Select select = new Select(filterStatus);
         int totalContracts = monthlyContracts.size();
         System.out.println(totalContracts);
-        for(int i=0;i<totalContracts;i++) {
+        for(int i=1;i<=totalContracts;i++) {
             select.selectByValue(prop.getProperty("Contract_status"));
             Thread.sleep(3000);
             scrollToElement(monthlyContracts.get(i));
+            System.out.println("Opening contract Id:"+contractId.get(i).getText());
             if(monthlyContracts.get(i).isDisplayed()){
                 viewWorkstreamButton.get(i).click();
-                System.out.println("opened workstream"+i);
+               // System.out.println("Opened contract Id:"+contractId.get(i).getText());
                 ContractPage contractPage = new ContractPage();
                 contractPage.yetToSubmit();
                 driver.navigate().back();

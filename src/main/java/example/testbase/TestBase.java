@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class TestBase {
     public static WebDriver driver;
@@ -100,6 +101,7 @@ public class TestBase {
         // Scroll to the calculated position
         jsExecutor.executeScript("window.scrollTo(0,arguments[0]);", scrollY);
     }
+
 
     public void close() {
         driver.close();

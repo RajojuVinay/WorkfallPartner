@@ -16,6 +16,7 @@ import static example.testutil.TestUtils.currentDay;
 
 public class ContractPage extends TestBase {
 
+    WorkstreamListPage workstreamListPage = new WorkstreamListPage();
 
     @FindBy(css=".dateCss")
     List<WebElement> dateLogs;
@@ -83,14 +84,16 @@ public class ContractPage extends TestBase {
                                 //waitForElement(submitLog(currentDay,currentMonth));
                                 currentDayLogField(currentLogDate).sendKeys(prop.getProperty("log_comments"));
                                 //String submitButton = "//button[contains(text(),'MARK ATTENDANCE FOR "+currentDay+" "+currentMonth+"')]";
-                                System.out.println("entered commments");
+                                System.out.println("Submitted comments");
                                 //driver.findElement(By.xpath(submitButton)).click();
                                 submitLog(currentDay, currentMonth).click();
+
+                                System.out.println("Submitted "+currentDay+" log for "+workstreamListPage.contractId);
                             }
                         }
                     }
                     catch(NoSuchElementException e){
-                        System.out.println("Log disabled");
+                        System.out.println("Logs are disabled for "+workstreamListPage.contractId);
                     }
                     break;
                     }
@@ -98,7 +101,7 @@ public class ContractPage extends TestBase {
             }
             else
             {
-            System.out.println("its a Weekend");
+            System.out.println("You can't submit logs for today cause its a Weekend");
             }
         }
     }
