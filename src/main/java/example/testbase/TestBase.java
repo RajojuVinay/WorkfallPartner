@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -78,6 +79,11 @@ public class TestBase {
     protected void waitForElement(WebElement element){
         wait.until(ExpectedConditions.visibilityOf(element)).click();
     }
+
+    protected void waitForElements(List<WebElement> elements,int i){
+        wait.until(ExpectedConditions.visibilityOf(elements.get(i)));
+    }
+
     protected void scrollToElement(WebElement element) {
 //        JavascriptExecutor js = (JavascriptExecutor) driver;
 //        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);

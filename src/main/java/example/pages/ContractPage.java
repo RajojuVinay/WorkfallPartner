@@ -74,21 +74,22 @@ public class ContractPage extends TestBase {
                 if (currentDay.equalsIgnoreCase(dateLogs.get(j).getText())) {
                     System.out.println("Its a Weekday");
                     // if(statusDisplayed()) {
-                    if(currentDayLogStatus(currentDay).isDisplayed()) {
-                        String getStatus = currentDayLogStatus(currentDay).getText();
-                        //System.out.println(getStatus + "null");
-                        if (getStatus.equalsIgnoreCase("")) {
-                            currentDayLog(currentDay).click();
-                            //waitForElement(submitLog(currentDay,currentMonth));
-                            currentDayLogField(currentLogDate).sendKeys(prop.getProperty("log_comments"));
-                            //String submitButton = "//button[contains(text(),'MARK ATTENDANCE FOR "+currentDay+" "+currentMonth+"')]";
-                            System.out.println("entered commments");
-                            //driver.findElement(By.xpath(submitButton)).click();
-                            submitLog(currentDay, currentMonth).click();
+                    try{
+                        if(currentDayLogStatus(currentDay).isDisplayed()) {
+                            String getStatus = currentDayLogStatus(currentDay).getText();
+                            //System.out.println(getStatus + "null");
+                            if (getStatus.equalsIgnoreCase("")) {
+                                currentDayLog(currentDay).click();
+                                //waitForElement(submitLog(currentDay,currentMonth));
+                                currentDayLogField(currentLogDate).sendKeys(prop.getProperty("log_comments"));
+                                //String submitButton = "//button[contains(text(),'MARK ATTENDANCE FOR "+currentDay+" "+currentMonth+"')]";
+                                System.out.println("entered commments");
+                                //driver.findElement(By.xpath(submitButton)).click();
+                                submitLog(currentDay, currentMonth).click();
+                            }
                         }
                     }
-                    else{
-                        disabledLog(currentDay).isDisplayed();
+                    catch(NoSuchElementException e){
                         System.out.println("Log disabled");
                     }
                     break;

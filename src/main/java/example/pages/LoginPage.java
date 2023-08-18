@@ -21,6 +21,7 @@ public class LoginPage extends TestBase {
     }
 
     public void login(String emailId,String pwd){
+        driver.manage().deleteAllCookies();
         TestBase.driver.get("https://app.testingmonkey.com/partner/login");
         emailField.sendKeys(emailId);
         passwordField.sendKeys(pwd);

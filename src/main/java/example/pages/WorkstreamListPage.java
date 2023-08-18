@@ -25,26 +25,28 @@ public class WorkstreamListPage extends TestBase {
 
     public WorkstreamListPage(){PageFactory.initElements(driver,this);}
 
-    public void openContract(){
+    public void openContract() throws InterruptedException {
         Select select = new Select(filterStatus);
-        select.selectByValue(prop.getProperty("Contract_status"));
         int totalContracts = monthlyContracts.size();
-            for(int i=0;i<totalContracts;i++) {
-                scrollToElement(monthlyContracts.get(i));
-                if(monthlyContracts.get(i).isDisplayed()){
-                    viewWorkstreamButton.get(i).click();
-                    System.out.println("opened workstream"+i);
-                    ContractPage contractPage = new ContractPage();
-                    contractPage.yetToSubmit();
-                    driver.navigate().back();
-                    wait.until(ExpectedConditions.visibilityOf(workstreamList));
-                }
-                scrollToElement(monthlyContracts.get(i));
-                System.out.println("scrolled to"+ i);
+        System.out.println(totalContracts);
+        for(int i=0;i<totalContracts;i++) {
+            select.selectByValue(prop.getProperty("Contract_status"));
+            Thread.sleep(3000);
+            scrollToElement(monthlyContracts.get(i));
+            if(monthlyContracts.get(i).isDisplayed()){
+                viewWorkstreamButton.get(i).click();
+                System.out.println("opened workstream"+i);
+                ContractPage contractPage = new ContractPage();
+                contractPage.yetToSubmit();
+                driver.navigate().back();
+                wait.until(ExpectedConditions.visibilityOf(workstreamList));
+            }
+        scrollToElement(monthlyContracts.get(i));
+        System.out.println("scrolled to"+ i);
 //                viewWorkstreamButton.get(i).click();
 //                System.out.println("opened workstream"+i);
 //                driver.navigate().back();
 //                wait.until(ExpectedConditions.visibilityOf(workstreamList));
-            }
+        }
     }
 }
