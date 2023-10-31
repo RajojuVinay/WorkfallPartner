@@ -65,13 +65,15 @@ public class ContractPage extends TestBase {
 
     public void yetToSubmit(){
         if(TestUtils.weekDayVerifier()) {
-            for (int j = 0; j <= dateLogs.size(); j++) {
-                String dayText = dateLogs.get(j).getText() + "1";
-                LocalDate day = LocalDate.now();
+            System.out.println(TestUtils.weekDayVerifier());
+            for (int j = 0; j < dateLogs.size(); j++) {
+                String dayText = dateLogs.get(j).getText();
+                LocalDate day = LocalDate.now().minusDays(1);
                 String currentDay = day.format(DateTimeFormatter.ofPattern("dd"));
                 String currentMonth = day.format(DateTimeFormatter.ofPattern("MMM"));
                 String currentLogDate = day.format(DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy"));
                 System.out.println("Checking the condition currentDay");
+                scrollToElement(dateLogs.get(j));
                 if (currentDay.equalsIgnoreCase(dateLogs.get(j).getText())) {
                     System.out.println("Its a Weekday");
                     // if(statusDisplayed()) {

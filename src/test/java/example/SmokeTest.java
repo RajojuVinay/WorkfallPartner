@@ -35,9 +35,10 @@ public class  SmokeTest extends TestBase {
     @Test(priority = 1)
     public void submitLogs() throws InterruptedException {
     loginPage.login(prop.getProperty("email"),prop.getProperty("password"));
-    Thread.sleep(3000);
+    Thread.sleep(8000);
+    waitForElement(homePage.workstreams);
     homePage.workstreams.click();
-    Thread.sleep(5000);
+    Thread.sleep(4000);
     wait.until(ExpectedConditions.visibilityOf(workstreamListPage.workstreamList));
     workstreamListPage.openContract();
     System.out.println("opened successfully");

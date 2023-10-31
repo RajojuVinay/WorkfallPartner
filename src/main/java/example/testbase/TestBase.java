@@ -52,11 +52,10 @@ public class TestBase {
             //log.debug("Opening Edge browser");
         } else if (browserName.equalsIgnoreCase("chrome")) {
 
-
-            WebDriverManager.edgedriver().setup();
+            WebDriverManager.chromedriver().setup();
             //System.setProperty("webdriver.chrome.driver","/home/thrymr/Desktop/Automation/Workfall/Drivers/chromedriver");
             //System.setProperty("webdriver.chrome.driver","C:\\Users\\MAHESH\\OneDrive\\Desktop\\Automation\\Workfall\\Drivers\\chromedriver.exe");
-            driver = new EdgeDriver();
+            driver = new ChromeDriver();
             //log.debug("Opening Chrome browser");
         } else if (browserName.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();

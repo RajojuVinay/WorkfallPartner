@@ -17,6 +17,12 @@ public class LoginPage extends TestBase {
 
     @FindBy(css="button[type='submit'][class='full-width-button orange-button']")
     WebElement loginButton;
+    @FindBy(css= "#hubspot-conversations-iframe")
+    WebElement hubspot;
+    @FindBy(css="button[shape='circle']>div")
+    WebElement closeHubspot;
+    @FindBy(css=".fa")
+    WebElement closeFooter;
 
     public LoginPage(){
         PageFactory.initElements(TestBase.driver,this);
@@ -24,8 +30,12 @@ public class LoginPage extends TestBase {
 
     public void login(String emailId,String pwd){
         driver.manage().deleteAllCookies();
-        TestBase.driver.get("https://wf.testingmonkey.com/partner/login");
+        TestBase.driver.get("https://app.testingmonkey.com/partner/login");
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+        driver.switchTo().frame(hubspot);
+        closeHubspot.click();
+        driver.switchTo().parentFrame();
+        //closeFooter.click();
         emailField.sendKeys(emailId);
         passwordField.sendKeys(pwd);
 //        if(loginButton.isDisplayed()) {

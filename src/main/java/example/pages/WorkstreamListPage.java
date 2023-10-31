@@ -17,7 +17,7 @@ public class WorkstreamListPage extends TestBase {
 
     @FindBy(css=".calender")
     List<WebElement> monthlyContracts;
-    @FindBy(css=".monthly-contract .header-w .btn-view-workstream")
+    @FindBy(css=".btn-view-workstream")
     List<WebElement> viewWorkstreamButton;
 
     @FindBy(css="select[name='contracts_filter']")
@@ -29,16 +29,17 @@ public class WorkstreamListPage extends TestBase {
 
     public void openContract() throws InterruptedException {
         Select select = new Select(filterStatus);
+        select.selectByValue(prop.getProperty("Contract_status"));
+        Thread.sleep(3000);
         int totalContracts = monthlyContracts.size();
         System.out.println(totalContracts);
-        for(int i=1;i<=totalContracts;i++) {
-            select.selectByValue(prop.getProperty("Contract_status"));
+        for(int i=1;i<totalContracts;i++) {
             Thread.sleep(3000);
             scrollToElement(monthlyContracts.get(i));
             System.out.println("Opening contract Id:"+contractId.get(i).getText());
             if(monthlyContracts.get(i).isDisplayed()){
                 viewWorkstreamButton.get(i).click();
-               // System.out.println("Opened contract Id:"+contractId.get(i).getText());
+             //   System.out.println("Opened contract Id:"+contractId.get(i).getText());
                 ContractPage contractPage = new ContractPage();
                 contractPage.yetToSubmit();
                 driver.navigate().back();
