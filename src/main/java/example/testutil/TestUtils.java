@@ -4,6 +4,7 @@ import example.testbase.TestBase;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
+import java.security.Key;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -60,5 +61,20 @@ public class TestUtils extends TestBase {
         LocalDate day = LocalDate.now();
         String  currentMonth = day.format(DateTimeFormatter.ofPattern("MMM"));
         return currentMonth;
+    }
+
+    public static void searchAndSelectValue(WebElement element,String value) throws InterruptedException {
+        element.click();
+        Thread.sleep(1000);
+        element.sendKeys(value+ Keys.ENTER);
+    }
+
+    public static void enterTextField(WebElement element,String value) throws InterruptedException {
+        waitForElement(element);
+        element.click();
+        // Clear the element only if it's not already empty
+        element.clear();
+        Thread.sleep(3000);
+        element.sendKeys(value);
     }
 }

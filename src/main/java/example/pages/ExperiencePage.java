@@ -1,6 +1,7 @@
 package example.pages;
 
 import example.testbase.TestBase;
+import example.testutil.TestUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -35,19 +36,22 @@ public class ExperiencePage extends TestBase {
         PageFactory.initElements(driver,this);
     }
     public void fillingEmploymentDetails(String descp) throws InterruptedException {
-        JavascriptExecutor js=(JavascriptExecutor)driver;
+        scrollToElement(addEmploymentButton);
         addEmploymentButton.click();
-        jobTitle.sendKeys("QA Engineer");
-        company.sendKeys("ABDFG");
+        //jobTitle.sendKeys("QA Engineer");
+        TestUtils.enterTextField(jobTitle,"QA Engineer");
+        //company.sendKeys("ABDFG");
+        TestUtils.enterTextField(company,"ABV Pvt Limited");
         industryDomain.sendKeys("DevTools"+ Keys.ENTER);
         Thread.sleep(2500);
         checkbox.click();
         fromDate.sendKeys("2015-05-11");
-        expDescription.sendKeys(descp);
-        js.executeScript("arguments[0].scrollIntoView(true);",saveButton);
+        //expDescription.sendKeys(descp);
+        TestUtils.enterTextField(expDescription,descp);
+        scrollToElement(saveButton);
         saveButton.click();
         Thread.sleep(3000);
-        js.executeScript("arguments[0].scrollIntoView(true);",continueButton);
+        scrollToElement(continueButton);
         continueButton.click();
     }
 }

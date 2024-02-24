@@ -3,7 +3,9 @@ package example;
 import example.database.DataBase;
 import example.pages.*;
 import example.testbase.TestBase;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -32,21 +34,26 @@ public class PartnerSignUp extends TestBase
         expertisePage = new ExpertisePage();
         dataBase = new DataBase();
     }
-    @Test
-    public void signUp() throws InterruptedException, SQLException, ClassNotFoundException {
+    @Test(dataProvider = "signup")
+    public void signUp(Boolean NewUser,String firstName,String lastName,String email,String password) throws InterruptedException, SQLException, ClassNotFoundException {
         boolean newUser = Boolean.parseBoolean(prop.getProperty("NewUser"));
-        if (newUser == true)
+        if (NewUser)
         {
             landingPage.applicableToApply();
-            landingPage.submitBasicDetails("vinaym11", "paartner", "vinaypartnerm11@mailinator.com", "Qwerty@123");
+            landingPage.submitBasicDetails(firstName, lastName, email,password);
         }
         else
         {
-        //    loginPage.login("vinaypartnerm9@mailinator.com","Qwerty@123");
+            loginPage.login(email, password);
         }
         aboutPage.fillingAboutData(prop.getProperty("Gender"), prop.getProperty("jobTitle"), prop.getProperty("aboutMe"),prop.getProperty("country"),prop.getProperty("city"), prop.getProperty("mobileNumber"));
         experiencePage.fillingEmploymentDetails(prop.getProperty("expDescp"));
         expertisePage.fillingExpertisePage();
         System.out.println(dataBase.getTestDetails());
+    }
+
+    @DataProvider(name="signup")
+    public Object[][] getData(){
+    return new Object[][]{{true,"vinaym45","paartner","vinaypartnerm45@mailinator.com","Qwerty@123"}};
     }
 }

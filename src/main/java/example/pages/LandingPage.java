@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class LandingPage extends TestBase {
     @FindBy(css="")
     WebElement signUpButton;
 
-    @FindBy(css=".checkmark")
+    @FindBy(css=".popup-from-container .checkBox")
     List<WebElement> checkboxes;
 
     @FindBy(css=".confirm-popup button[type='submit']")
@@ -36,26 +37,23 @@ public class LandingPage extends TestBase {
 
     @FindBy(css=".left-section-content .checkmark")
     WebElement termsCheckbox;
+    @FindBy(css=".alert-container")
+    WebElement errorMessage;
 
     @FindBy(css=".left-section-content button[type='submit']")
     WebElement signupButton;
+    @FindBy(css="div[class='cookiesLayout']")
+    WebElement footerText;
 
     public LandingPage(){
         PageFactory.initElements(driver,this);
     }
     public void applicableToApply(){
         driver.manage().deleteAllCookies();
-        driver.get("https://wf.testingmonkey.com/partner/signup");
+        driver.get(prop.getProperty("partnerURL"));
         wait.until(ExpectedConditions.visibilityOfAllElements(checkboxes));
-//        for(WebElement cb:checkboxes){
-//            cb.click();
-//        }
-        for(int i=0;i<checkboxes.size();i++)
-        {
-            if(!checkboxes.get(i).isSelected())
-            {
-                checkboxes.get(i).click();
-            }
+        for(WebElement cb:checkboxes){
+            cb.click();
         }
     confirmSignup.click();
     }
@@ -63,16 +61,23 @@ public class LandingPage extends TestBase {
     public void submitBasicDetails(String fName,String lName,String email,String pwd) throws InterruptedException {
         firstNameField.sendKeys(fName);
         lastNameField.sendKeys(lName);
-        nextButton.click();
+        //nextButton.click();
         emailField.sendKeys(email);
         passwordField.sendKeys(pwd);
         wait.until(ExpectedConditions.visibilityOf(termsCheckbox));
-        boolean termscheck = termsCheckbox.isSelected();
-        if(termscheck==false)
-        {
+        boolean termsCheck = termsCheckbox.isSelected();
+        if (!termsCheck) {
             termsCheckbox.click();
         }
-        Thread.sleep(3000);
+        Thread.sleep(2000);
+        executeJavaScript("document.querySelector(\"div[class='cookiesLayout']\").style.display='none'");
+        scrollToElement(signupButton);
         signupButton.click();
+        try {
+            Assert.assertFalse(errorMessage.isDisplayed(), "already registered");
+        }
+        catch (Exception e) {
+            System.out.println("No such element");
+        }
     }
 }

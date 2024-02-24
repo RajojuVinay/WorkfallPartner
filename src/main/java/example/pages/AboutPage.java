@@ -2,6 +2,7 @@ package example.pages;
 
 import example.testbase.TestBase;
 
+import example.testutil.TestUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -10,7 +11,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AboutPage extends TestBase {
@@ -43,6 +46,8 @@ public class AboutPage extends TestBase {
     WebElement proficiency;
     @FindBy(css=".common-container .orange-button")
     WebElement saveButton;
+    @FindBy(css=".input-error-message")
+    List<WebElement> missingFieldErrorMessage;
     @FindBy(css=".step-content-left-side button[type='submit']")
     WebElement continueButton;
     @FindBy(css=".selected-languages .selected-lang-container")
@@ -55,8 +60,10 @@ public class AboutPage extends TestBase {
 //    WebElement profilePhoto;
     @FindBy(css=".image-container")
     WebElement profilePhoto;
+    @FindBy(css="label[for='profile_pic']")
+    WebElement uploadProfilePic;
     @FindBy(css="#imageInput")
-    WebElement uploadPhoto;
+    WebElement submitPhoto;
     @FindBy(css=".saveBtn")
     WebElement saveImage;
     @FindBy(css=".error-message")
@@ -67,80 +74,92 @@ public class AboutPage extends TestBase {
         PageFactory.initElements(driver,this);
     }
 
+
     public void fillingAboutData(String selectGender, String enterJobTitle, String selfDescription, String country, String city, String mobileNumber) throws InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        Actions action =new Actions(driver);
-
+        scrollToElement(gender);
+        //Selecting Gender
         Select genderValue = new Select(gender);
-        genderValue.selectByVisibleText(selectGender);  //Male  //Female //Others
-//        js.executeScript("window.scrollBy(0,150)", "");
-//      js.executeScript("arguments[0].scrollIntoView(true);", profilePhoto);
+        waitForElement(gender);
+        genderValue.selectByVisibleText(selectGender);
+//      js.executeScript("window.scrollBy(0,150)", "");
         boolean fileInput = profilePhoto.isDisplayed();
-        if (fileInput == true) {
-            wait.until(ExpectedConditions.visibilityOf(profilePhoto)).click();
+        if (fileInput) {
+            wait.until(ExpectedConditions.visibilityOf(profilePhoto));
+            do {
+                uploadProfilePic.click();
+            }
+            while(!saveImage.isDisplayed());
             js.executeScript("document.getElementById('imageInput').style.setProperty('display', 'block', 'important')");
-            uploadPhoto.sendKeys(System.getProperty("user.dir") + "/images.jpeg");
+            submitPhoto.sendKeys(System.getProperty("user.dir") + "/image.jpg");
             wait.until(ExpectedConditions.visibilityOf(saveImage)).click();
             saveImage.click();
         } else {
+            js.executeScript("arguments[0].scrollIntoView();", profilePhoto);
+
             System.out.println("Cant Upload the Profile picture");
         }
         //js.executeScript("arguments[0].scrollIntoView(true);", jobTitle);
-        jobTitle.sendKeys(enterJobTitle+Keys.TAB);
-        Thread.sleep(5000);
-        wait.until(ExpectedConditions.visibilityOf(aboutMe));
-        aboutMe.sendKeys(selfDescription+Keys.TAB);
-//        action.sendKeys(Keys.TAB);
+
         Thread.sleep(3000);
-        js.executeScript("arguments[0].scrollIntoView(true);", countryDropDown);
-        countryDropDown.sendKeys(country + Keys.ENTER);
-        if(closeError.isDisplayed())
-        {
-            closeError.click();
-        }
+//        TestUtils.enterTextField(jobTitle,enterJobTitle);
+        jobTitle.clear();
+        jobTitle.sendKeys(enterJobTitle);
+        Thread.sleep(3000);
+        scrollToElement(aboutMe);
+        wait.until(ExpectedConditions.visibilityOf(aboutMe));
+        aboutMe.clear();
+        aboutMe.sendKeys(selfDescription);
+//        TestUtils.enterTextField(aboutMe,selfDescription);
+        Thread.sleep(3000);
+        scrollToElement(countryDropDown);
+        TestUtils.searchAndSelectValue(countryDropDown,country);
         Thread.sleep(3000);
         cityDropDown.sendKeys(city);
         for (int i = 0; i < cities.size(); i++) {
+            Thread.sleep(1000);
             cities.get(0).click();
             break;
         }
-        wait.until(ExpectedConditions.visibilityOf(phoneNumber));
-        phoneNumber.sendKeys("8142745695"+Keys.TAB);
-        if(closeError.isDisplayed())
-        {
-            closeError.click();
-        }
-       js.executeScript("arguments[0].scrollIntoView(true);", nationalId);
+        Thread.sleep(1000);
+        //phone Number
+        waitForElement(phoneNumber);
+        System.out.println("entering phonenumber");
+        phoneNumber.clear();
+        phoneNumber.sendKeys(mobileNumber);
+//        TestUtils.enterTextField(phoneNumber,mobileNumber);
+        System.out.println("entered phone Number");
+        js.executeScript("arguments[0].scrollIntoView(true);", nationalId);
         js.executeScript("document.querySelector('.file-input-label>input').style.display='block'");
         boolean docInput = nationalId.isDisplayed();
-        if (docInput == true) {
-            nationalId.sendKeys(System.getProperty("user.dir") + "/aadhaarCard.jpg");
+        if (docInput) {
+            nationalId.sendKeys(System.getProperty("user.dir") + "/aadhaarCard.png");
         } else {
-            System.out.println("Cant Upload the Document");
+            System.out.println("Cant Upload the Document/already Uploaded");
         }
         Thread.sleep(3000);
-            if(closeError.isDisplayed())
-            {
-                closeError.click();
-            }
+            scrollToElement(addLanguages);
             addLanguages.click();
             wait.until(ExpectedConditions.visibilityOf(language));
             language.sendKeys("English", Keys.ENTER);
             Thread.sleep(2000);
             proficiency.sendKeys("Full Professional", Keys.ENTER);
-//            boolean languageSelected = languageError.isDisplayed();
-//            if(languageSelected == true)
-//            {
-//                cancelLanguageSelection.click();
-//            }
-        saveButton.click();
-        Thread.sleep(5000);
+           try{ if(languageError.isDisplayed()) {
+               cancelLanguageSelection.click();
+           }
+           }
+            catch(Exception e) {
+                saveButton.click();
+            }
+        Thread.sleep(3000);
             js.executeScript("arguments[0].scrollIntoView(true);", continueButton);
             continueButton.click();
-            if(closeError.isDisplayed())
-            {
-                closeError.click();
-            }
-    }
+        //Assert.assertEquals();
+        List<WebElement> errors= new ArrayList<>(missingFieldErrorMessage);
+        for(WebElement errorField:errors){
+            System.out.println(errorField.getText());
+            Assert.assertFalse(errorField.isDisplayed(),"Not Entered proper Data");
+        }
+        }
 }
 

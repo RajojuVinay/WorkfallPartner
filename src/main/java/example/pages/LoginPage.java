@@ -23,6 +23,8 @@ public class LoginPage extends TestBase {
     WebElement closeHubspot;
     @FindBy(css=".fa")
     WebElement closeFooter;
+    @FindBy(css="div[class='cookiesLayout']")
+    WebElement footerCookie;
 
     public LoginPage(){
         PageFactory.initElements(TestBase.driver,this);
@@ -35,6 +37,9 @@ public class LoginPage extends TestBase {
         driver.switchTo().frame(hubspot);
         closeHubspot.click();
         driver.switchTo().parentFrame();
+        executeJavaScript("document.querySelector(\"div[class='cookiesLayout']\").style.display='none'");
+
+       // hideElement(footerCookie);
         //closeFooter.click();
         emailField.sendKeys(emailId);
         passwordField.sendKeys(pwd);

@@ -1,6 +1,7 @@
 package example.testbase;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,11 +32,7 @@ public class TestBase {
         try {
             fs = new FileInputStream(System.getProperty("user.dir") + "/src/main/java/example/config/config.properties");
             prop.load(fs);
-        } catch (FileNotFoundException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        //FileInputStream fs = new FileInputStream("C:\\Users\\MAHESH\\OneDrive\\Desktop\\Automation\\Smoketest\\src\\test\\java\\workfall\\data.properties");
+        } //FileInputStream fs = new FileInputStream("C:\\Users\\MAHESH\\OneDrive\\Desktop\\Automation\\Smoketest\\src\\test\\java\\workfall\\data.properties");
         catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -76,12 +73,23 @@ public class TestBase {
         return js.executeScript(script, args);
     }
 
-    protected void waitForElement(WebElement element){
+    public static void waitForElement(WebElement element){
         wait.until(ExpectedConditions.visibilityOf(element)).click();
     }
 
     protected void waitForElements(List<WebElement> elements,int i){
         wait.until(ExpectedConditions.visibilityOf(elements.get(i)));
+    }
+
+    protected void hideElement(WebElement element){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String script = "document.querySelector('"+element+"'); element.style.display='none';";
+        try {
+            js.executeScript(script);
+            System.out.println("Element hidden successfully");
+        } catch (JavascriptException e) {
+            System.err.println("Error hiding element: " + e.getMessage());
+        }
     }
 
     protected void scrollToElement(WebElement element) {
