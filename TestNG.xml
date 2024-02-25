@@ -1,0 +1,12 @@
+<?xml version= "1.0" encoding= "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name= "WorkfallPartner">
+    <listeners>
+        <listener class-name="example.testutil.Reporting"></listener>
+    </listeners>
+    <test name= "Candidate Registration">
+         <classes>
+             <class name= "example.PartnerSignUp" />
+         </classes>
+     </test>
+</suite>

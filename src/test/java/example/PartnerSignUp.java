@@ -3,7 +3,7 @@ package example;
 import example.database.DataBase;
 import example.pages.*;
 import example.testbase.TestBase;
-import org.testng.Assert;
+import example.testutil.XLUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -52,8 +52,22 @@ public class PartnerSignUp extends TestBase
         System.out.println(dataBase.getTestDetails());
     }
 
+//    @DataProvider(name="signup")
+//    public Object[][] getData(){
+//    return new Object[][]{{true,"vinaym46","paartner","vinaypartnerm46@mailinator.com","Qwerty@123"}};
+//    }
+
     @DataProvider(name="signup")
-    public Object[][] getData(){
-    return new Object[][]{{true,"vinaym45","paartner","vinaypartnerm45@mailinator.com","Qwerty@123"}};
+    public String[][] getData() throws IOException {
+        String path = System.getProperty("user.dir")+"/src/main/java/example/testdata/TestData.xlsx";
+        int rownum=XLUtils.getRowCount(path,"Sheet1");
+        int colnum=XLUtils.getCellCount(path,"Sheet1",1);
+        String loginData[][] = new String[rownum][colnum];
+        for(int i=1;i<=rownum;i++){
+            for(int j=0;j<colnum;j++) {
+                loginData[i-1][j]=XLUtils.getCellData(path,"Sheet1",i,j);
+            }
+        }
+        return loginData;
     }
 }
