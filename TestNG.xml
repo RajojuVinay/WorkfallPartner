@@ -1,12 +1,14 @@
 <?xml version= "1.0" encoding= "UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name= "WorkfallPartner">
+<suite name= "WorkfallPartner" parallel="classes" thread-count="3">
     <listeners>
         <listener class-name="example.testutil.Reporting"></listener>
     </listeners>
     <test name= "Candidate Registration">
          <classes>
-             <class name= "example.PartnerSignUp" />
+             <class name= "example.PartnerSignUp"></class>
+             <class name="example.SmokeTest"></class>
+             <class name="example.TestCase"></class>
          </classes>
      </test>
 </suite>
