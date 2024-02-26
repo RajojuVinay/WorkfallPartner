@@ -58,7 +58,7 @@ public class LandingPage extends TestBase {
     confirmSignup.click();
     }
 
-    public void submitBasicDetails(String fName,String lName,String email,String pwd) throws InterruptedException {
+    public void signup(String fName,String lName,String email,String pwd) throws InterruptedException {
         firstNameField.sendKeys(fName);
         lastNameField.sendKeys(lName);
         //nextButton.click();
@@ -74,10 +74,14 @@ public class LandingPage extends TestBase {
         scrollToElement(signupButton);
         signupButton.click();
         try {
-            Assert.assertFalse(errorMessage.isDisplayed(), "already registered");
+            System.out.println(errorMessage.getText());
+            Assert.assertFalse(errorMessage.isDisplayed(), "cannot register");
         }
         catch (Exception e) {
             System.out.println("No such element");
+        }
+        finally {
+            System.out.println("Redirecting to application form");
         }
     }
 }
